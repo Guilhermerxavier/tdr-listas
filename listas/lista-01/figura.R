@@ -12,5 +12,3 @@ boxplot(
 )
 
 dev.off()
-
-
