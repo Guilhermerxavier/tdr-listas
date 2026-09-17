@@ -1,4 +1,5 @@
 library(targets)
+library(tarchetypes)
 
 tar_source("R")
 
@@ -41,5 +42,10 @@ list(
       "saidas/medias_solar_wind.csv"
     ),
     format = "file"
+  ),
+
+  tar_quarto(
+    relatorio,
+    "relatorio.qmd"
   )
 )
