@@ -33,7 +33,7 @@ salvar_figura <- function(dados, modelo, arquivo) {
     dados$Solar.R,
     xlab = "Wind",
     ylab = "Solar.R",
-    main = "Solar.R em função de Wind"
+    main = "Solar.R versus Wind"
   )
   
   abline(modelo)
@@ -41,3 +41,10 @@ salvar_figura <- function(dados, modelo, arquivo) {
   
   arquivo
 }
+
+## Grava as médias mensais em um CSV e devolve o caminho do arquivo.
+salvar_medias <- function(medias, arquivo) {
+  write.csv(medias, arquivo, row.names = FALSE)
+  arquivo
+}
+
