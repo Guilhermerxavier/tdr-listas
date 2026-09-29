@@ -1,0 +1,14 @@
+# Arquivos auxiliares do LaTeX
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+
+# Arquivos do R
+.Rhistory
+.RData
+
+
