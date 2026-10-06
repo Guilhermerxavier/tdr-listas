@@ -66,3 +66,33 @@ acessos_2023 <- read_delim(
 
 
 
+# Exercício 2 — Arrumar a tabela
+
+## Transformação para o formato longo
+
+A tabela anual está em formato largo, com os meses representados como
+colunas. A transformação para o formato longo deixa uma linha para cada
+unidade e mês, com três colunas: `codigo`, `mes` e `acessos`.
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+acessos_2023_long <- acessos_2023 |>
+  pivot_longer(
+    cols = -codigo,
+    names_to = "mes",
+    values_to = "acessos"
+  ) |>
+  mutate(
+    mes = factor(
+      mes,
+      levels = c(
+        "jan", "fev", "mar", "abr", "mai", "jun",
+        "jul", "ago", "set", "out", "nov", "dez"
+      )
+    )
+  )
+
+nrow(acessos_2023_long)
+sum(is.na(acessos_2023_long$acessos))
