@@ -135,3 +135,46 @@ sem_medicao <- cadastro |>
 sem_medicao
 
 
+
+# Exercício 4 — Resumir por grupo
+
+## Decisão sobre os meses sem registro
+
+Os meses sem registro serão tratados como zero nos cálculos do total anual
+e da média mensal da medida relativa. A contagem de meses com registro,
+porém, considera apenas os meses que possuem valor observado.
+
+## Resumo por unidade
+
+```{r}
+resumo_unidade <- acessos_2023_cadastro |>
+  group_by(codigo, nome, plano) |>
+  summarise(
+    meses_com_registro = sum(!is.na(acessos)),
+    total_ano = sum(replace_na(acessos, 0)),
+    media_mensal_relativa = mean(replace_na(acessos_por_m2, 0)),
+    .groups = "drop"
+  ) |>
+  arrange(desc(media_mensal_relativa))
+
+resumo_unidade
+```
+
+## Resumo por categoria
+
+```{r}
+resumo_categoria <- acessos_2023_cadastro |>
+  group_by(plano) |>
+  summarise(
+    unidades = n_distinct(codigo),
+    total_ano = sum(replace_na(acessos, 0)),
+    media_mensal_relativa = mean(replace_na(acessos_por_m2, 0)),
+    .groups = "drop"
+  )
+
+resumo_categoria
+```
+
+
+```markdown
+O total de acessos registrados no ano foi `r sum(resumo_categoria$total_ano)`.
