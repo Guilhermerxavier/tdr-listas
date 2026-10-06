@@ -96,3 +96,42 @@ acessos_2023_long <- acessos_2023 |>
 
 nrow(acessos_2023_long)
 sum(is.na(acessos_2023_long$acessos))
+
+
+# Exercício 3 — Juntar ao cadastro
+
+## Junção com o cadastro
+
+A tabela longa contém várias linhas para cada unidade, enquanto o cadastro
+contém uma linha por unidade. A junção pela chave `codigo` mantém todas
+as linhas da tabela longa e acrescenta as informações do cadastro.
+
+```{r}
+n_linhas_antes <- nrow(acessos_2023_long)
+
+acessos_2023_cadastro <- acessos_2023_long |>
+  left_join(
+    cadastro,
+    by = "codigo",
+    relationship = "many-to-one"
+  )
+
+n_linhas_depois <- nrow(acessos_2023_cadastro)
+
+n_linhas_antes
+n_linhas_depois
+
+acessos_2023_cadastro <- acessos_2023_cadastro |>
+  mutate(
+    acessos_por_m2 = acessos / area_m2
+  )
+
+sem_medicao <- cadastro |>
+  anti_join(
+    acessos_2023_long,
+    by = "codigo"
+  )
+
+sem_medicao
+
+
