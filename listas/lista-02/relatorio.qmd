@@ -5,6 +5,8 @@ lang: pt-BR
 format:
   html:
     self-contained: true
+execute:
+  echo: false
 ---
 
 ```{r}
@@ -13,7 +15,7 @@ library(targets)
 
 ## Médias mensais
 
-A Tabela @tbl-medias apresenta as médias mensais das duas variáveis escolhidas.
+A @tbl-medias apresenta as médias mensais das duas variáveis escolhidas.
 
 ```{r}
 #| label: tbl-medias
@@ -29,7 +31,7 @@ knitr::kable(
 
 O conjunto de dados possui `r nrow(tar_read(dados))` observações. O ajuste utilizou `r nobs(tar_read(modelo))` observações.
 
-A Figura @fig-dispersao mostra a dispersão de `Solar.R` em função de `Wind`, com a reta ajustada pelo modelo do pipeline.
+A @fig-dispersao mostra a dispersão de `Solar.R` em função de `Wind`, com a reta ajustada pelo modelo do pipeline.
 
 ```{r}
 #| label: fig-dispersao
@@ -38,6 +40,5 @@ A Figura @fig-dispersao mostra a dispersão de `Solar.R` em função de `Wind`, 
 knitr::include_graphics(tar_read(figura))
 ```
 
-O coeficiente de determinação foi `r round(summary(tar_read(modelo))$r.squared, 3)`.
-
-A análise encontrou uma associação linear estimada entre `Solar.R` e `Wind`, resumida pelas médias mensais e pelo modelo ajustado. O coeficiente de determinação indica quanto da variação observada em `Solar.R` é explicada pelo modelo linear com `Wind`.
+A análise encontrou uma associação linear estimada entre `Solar.R` e
+`Wind`, resumida pelas médias mensais e pelo modelo ajustado. Com R² = 0,003, o vento não explica a variação observada na radiação solar.
