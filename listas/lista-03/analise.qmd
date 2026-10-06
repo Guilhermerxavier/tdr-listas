@@ -1,0 +1,68 @@
+---
+title: "Acessos às academias de uma rede"
+author: "Guilherme Rosa Xavier"
+lang: pt-BR
+format:
+  html:
+    self-contained: true
+---
+
+# Exercício 1 — O documento e a leitura
+
+## Leitura dos arquivos
+
+O arquivo `cadastro.csv` usa `;` como separador de campos, ponto como
+separador decimal e codificação ISO-8859-1. O arquivo
+`acessos_2023.csv` usa `;` como separador de campos, ponto como
+separador decimal e codificação ASCII. Nesse arquivo, `-` indica ausência
+de registro.
+
+### Cadastro das unidades
+
+```{r}
+library(readr)
+
+cadastro <- read_delim(
+  "dados/cadastro.csv",
+  delim = ";",
+  locale = locale(
+    decimal_mark = ".",
+    encoding = "ISO-8859-1"
+  ),
+  col_types = cols(
+    codigo = col_character(),
+    nome = col_character(),
+    plano = col_character(),
+    area_m2 = col_double()
+  )
+)
+
+
+acessos_2023 <- read_delim(
+  "dados/acessos_2023.csv",
+  delim = ";",
+  na = "-",
+  locale = locale(
+    decimal_mark = ".",
+    encoding = "ASCII"
+  ),
+  col_types = cols(
+    codigo = col_character(),
+    jan = col_double(),
+    fev = col_double(),
+    mar = col_double(),
+    abr = col_double(),
+    mai = col_double(),
+    jun = col_double(),
+    jul = col_double(),
+    ago = col_double(),
+    set = col_double(),
+    out = col_double(),
+    nov = col_double(),
+    dez = col_double()
+  )
+)
+
+
+
+
