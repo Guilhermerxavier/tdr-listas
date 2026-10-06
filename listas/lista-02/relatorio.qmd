@@ -1,0 +1,44 @@
+---
+title: "Relação entre Solar.R e Wind"
+author: "Guilherme Xavier"
+lang: pt-BR
+format:
+  html:
+    self-contained: true
+execute:
+  echo: false
+---
+
+```{r}
+library(targets)
+```
+
+## Médias mensais
+
+A @tbl-medias apresenta as médias mensais das duas variáveis escolhidas.
+
+```{r}
+#| label: tbl-medias
+#| tbl-cap: "Médias mensais de Solar.R e Wind."
+
+knitr::kable(
+  tar_read(medias),
+  digits = 2
+)
+```
+
+## Modelo e dispersão
+
+O conjunto de dados possui `r nrow(tar_read(dados))` observações. O ajuste utilizou `r nobs(tar_read(modelo))` observações.
+
+A @fig-dispersao mostra a dispersão de `Solar.R` em função de `Wind`, com a reta ajustada pelo modelo do pipeline.
+
+```{r}
+#| label: fig-dispersao
+#| fig-cap: "Dispersão de Solar.R em função de Wind, com a reta ajustada."
+
+knitr::include_graphics(tar_read(figura))
+```
+
+A análise encontrou uma associação linear estimada entre `Solar.R` e
+`Wind`, resumida pelas médias mensais e pelo modelo ajustado. Com R² = 0,003, o vento não explica a variação observada na radiação solar.
