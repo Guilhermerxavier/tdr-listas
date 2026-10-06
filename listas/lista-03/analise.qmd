@@ -63,7 +63,7 @@ acessos_2023 <- read_delim(
   )
 )
 
-
+```
 
 
 # Exercício 2 — Arrumar a tabela
@@ -96,7 +96,7 @@ acessos_2023_long <- acessos_2023 |>
 
 nrow(acessos_2023_long)
 sum(is.na(acessos_2023_long$acessos))
-
+```
 
 # Exercício 3 — Juntar ao cadastro
 
@@ -134,7 +134,7 @@ sem_medicao <- cadastro |>
 
 sem_medicao
 
-
+```
 
 # Exercício 4 — Resumir por grupo
 
@@ -175,6 +175,72 @@ resumo_categoria <- acessos_2023_cadastro |>
 resumo_categoria
 ```
 
+O total de acessos registrados no ano foi
+`r sum(resumo_categoria$total_ano)`.
 
-```markdown
-O total de acessos registrados no ano foi `r sum(resumo_categoria$total_ano)`.
+# Exercício 5 — Todos os anos de uma vez
+
+```{r}
+library(purrr)
+
+arquivos_anuais <- list.files(
+  "dados",
+  pattern = "^acessos_20[0-9]{2}\\.csv$",
+  full.names = TRUE
+)
+
+dados_anuais <- map(
+  arquivos_anuais,
+  \(arquivo) read_csv2(
+    arquivo,
+    na = "-",
+    locale = locale(encoding = "Latin1"),
+    col_types = cols(
+      codigo = col_character(),
+      jan = col_double(),
+      fev = col_double(),
+      mar = col_double(),
+      abr = col_double(),
+      mai = col_double(),
+      jun = col_double(),
+      jul = col_double(),
+      ago = col_double(),
+      set = col_double(),
+      out = col_double(),
+      nov = col_double(),
+      dez = col_double()
+    ),
+    show_col_types = FALSE
+  ) |>
+    mutate(origem = arquivo)
+)
+
+acessos_todos <- list_rbind(dados_anuais) |>
+  mutate(
+    ano = parse_number(basename(origem))
+  )
+
+
+acessos_todos_long <- acessos_todos |>
+  pivot_longer(
+    cols = jan:dez,
+    names_to = "mes",
+    values_to = "acessos"
+  ) |>
+  mutate(
+    mes = factor(
+      mes,
+      levels = c(
+        "jan", "fev", "mar", "abr", "mai", "jun",
+        "jul", "ago", "set", "out", "nov", "dez"
+      )
+    )
+  )
+
+acessos_todos_cadastro <- acessos_todos_long |>
+  left_join(
+    cadastro,
+    by = "codigo",
+    relationship = "many-to-one"
+  )
+```
